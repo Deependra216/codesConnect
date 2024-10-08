@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import NavBar from './NavBar'
 import { Outlet } from 'react-router-dom'
 import Footer from './Footer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../utilis/constants'
 import { addUser } from '../utilis/userSlice'
 import axios from 'axios';
@@ -11,10 +11,12 @@ import { useNavigate } from 'react-router-dom';
 const Body = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const userData = useSelector((store)=> store.user)
+  
   const fetchUser = async()=>{
+    if(userData) return;
     try{
-      const result = await axios.get(BASE_URL+ "/profile/view", {
+      const result = await axios.get(BASE_URL+ '/profile/view', {
         withCredentials:true
       });
       dispatch(addUser(result.data))

@@ -8,6 +8,7 @@ import { BASE_URL } from '../utilis/constants';
 const Login = () => {
     const [emailId,setEmailId] =useState('kholi@gmail.com');
     const [password,setPassword] =useState('Kholi@123');
+    const [error,setError] = useState('')
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleLogin = async()=>{
@@ -19,12 +20,12 @@ const Login = () => {
           }, { withCredentials: true });
           
           dispatch(addUser(result.data))
-          navigate('/');
+          navigate('/feed');
     }  
     catch(err){
-        console.log(err)
+      setError(err?.response?.data || "Something went wrong!!")        
     }
-    }
+  }
   return (
     <div className='flex justify-center my-5'>
 
@@ -53,9 +54,11 @@ const Login = () => {
           />
         </label>
     </div>
-    
+      <p className='text-red-500'>{error}</p>
        <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={handleLogin}>Login</button>
+            <button className="btn btn-primary" >Sign Up</button>
+
         </div>
   </div>
 </div>
