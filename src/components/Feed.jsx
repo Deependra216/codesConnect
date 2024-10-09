@@ -8,15 +8,17 @@ import UserCard from './UserCard'
 
 const Feed = () => {
   const feed = useSelector((store)=>store.feed)
-  console.log(feed)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const getFeed=async()=>{
+  const getFeed = async()=>{
     if(feed) return;
     try{
-      const result = await axios.get(BASE_URL + '/feed',{withCredentials:true})
-      console.log("Feed result" + result?.data?.data);
-      dispatch(addFeed(result?.data?.data));
+      const res = await axios.get(BASE_URL + "/feed",
+        {
+          withCredentials:true
+        });
+      // console.log(res?.data?.data);
+      dispatch(addFeed(res?.data?.data));
   }
     catch(err){
       console.log(err)
@@ -25,13 +27,13 @@ const Feed = () => {
   useEffect(()=>{
     getFeed()
   },[])
+  if(!feed) return;
+  if(feed.length <=0 ) return <h1 className='flex justify-center my-10 font-semibold'> No New User Found!!!</h1>
   return ( feed && (
-      <div className='flex justify-center my-10'>
-        {/* <h1 className='flex justify-center text-3xl my-5'> 
-          Feed Page</h1> */}
-
-          <UserCard user={feed[0]} />
-    </div>)
+      <div className='flex justify-center my-5'>
+        <UserCard user={feed[0]} />
+    </div>
+    )
   )
 }
 
